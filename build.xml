@@ -1,0 +1,63 @@
+<project name="CIS3760_TicTacToe" basedir="." default="all">
+
+    <property name="src"            value="src"/>
+    <property name="bin"            value="bin"/>
+    <property name="dist"           value="dist"/>
+    <property name="docs"           value="docs"/>
+    <property name="images"         value="images"/>
+    
+    <property name="main-class"     value="Assignment1.TicTacToe"/>
+
+
+    <!--**************************************************************-->
+    <!--*************** DONT TOUCH BELLOW THIS LINE ******************-->
+    <!--**************************************************************-->
+
+
+    <target name="all" depends="runCreative"/>
+    <target name="creative" depends="runCreative"/>
+    <target name="boring" depends="runBoring" />
+    
+    <target name="build" depends="javadoc, jar"/>
+
+    <target name="class">
+        <mkdir dir="${bin}"/>
+        <javac target="1.6" srcdir="${src}" destdir="${bin}" />
+    </target>
+
+    <target name="jar" depends="class">
+        <mkdir dir="${dist}"/>
+        <jar destfile="${dist}/${ant.project.name}.jar" basedir="${bin}">
+            <manifest>
+                <attribute name="Main-Class" value="${main-class}"/>
+            </manifest>
+            
+            <fileset dir="${images}"/>
+        </jar>
+    </target>
+
+    <target name="runCreative" depends="jar">
+        <java jar="${dist}/${ant.project.name}.jar" fork="true">
+            <arg value="true"/>
+        </java>
+    </target>
+    
+    <target name="runBoring" depends="jar">
+        <java jar="${dist}/${ant.project.name}.jar" fork="true">
+            <arg value="false"/>
+        </java>
+    </target>
+
+    <target name="clean" description="Removes all .class and .jar files">
+        <delete dir="${bin}"/>
+        <delete dir="${dist}"/>
+    </target>
+    
+    
+    <target name="javadoc">
+        <delete dir="${docs}"/>
+        <javadoc sourcepath="${src}" destdir="${docs}" private="true" use="true" header="true" footer="true" windowtitle="Tic Tac Toe Documentation"/>
+    </target>
+
+
+</project>
